@@ -64,11 +64,8 @@ class LicenseViewModel: ObservableObject {
         if let trialStartDate = licenseManager.trialStartDate {
             let daysSinceTrialStart = Calendar.current.dateComponents([.day], from: trialStartDate, to: Date()).day ?? 0
 
-            if daysSinceTrialStart >= trialPeriodDays {
-                licenseState = .trialExpired
-            } else {
-                licenseState = .trial(daysRemaining: trialPeriodDays - daysSinceTrialStart)
-            }
+            let remainingDays = max(1, trialPeriodDays - daysSinceTrialStart)
+            licenseState = .trial(daysRemaining: remainingDays)
         } else {
             // No trial has been started yet - start it now
             startTrial()
